@@ -51,7 +51,7 @@ router.post('/login', async (req: Request, res: Response) => {
 
     const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
     res.cookie('web_jwt', token, {
-      httpOnly: true,
+      // httpOnly: true, commented for now..need to find a way to secure and read cookie
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       maxAge: 60 * 60 * 1000, // 1 hour
@@ -67,7 +67,7 @@ router.post('/login', async (req: Request, res: Response) => {
 
 // Logout route
 router.post('/logout', (req: Request, res: Response) => {
-  res.cookie('token', '', { maxAge: 0 });
+  res.cookie('web_jwt', '', { maxAge: 0 });
   res.status(200).send('Logged out successfully');
 });
 
